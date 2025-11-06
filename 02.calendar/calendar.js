@@ -5,35 +5,38 @@ import { startOfMonth, endOfMonth } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 
 const args = minimist(process.argv.slice(2));
-// console.log(args);
 
 const today = TZDate.tz("Asia/Tokyo");
+const cal_year = args.y || today.getFullYear();
+const cal_month = args.m - 1 || today.getMonth();
 
-const today_year = today.getFullYear();
-const today_month = today.getMonth(); //月を取得
-const first_date = startOfMonth(today).getDate(); //月の始まりを取得
-const last_date = endOfMonth(today).getDate(); //月の終わりを取得
-const first_day = startOfMonth(today).getDay(); //月の初日の曜日を取得
+const cal_date = new TZDate(cal_year, cal_month, "Asia/Tokyo");
+
+const first_date = startOfMonth(cal_date).getDate();
+const last_date = endOfMonth(cal_date).getDate();
+const first_day = startOfMonth(cal_date).getDay();
 
 const blank_array = [];
-const dates_array = []
+const dates_array = [];
 const calendar_rows = [];
 const calendar_col_number = 7;
 
-for(let j = 0; j < first_day; j++) {
+for (let x = 0; x < first_day; x++) {
   blank_array.push("   ");
 }
 
-for(let i = first_date; i <= last_date; i++) {
-  dates_array.push(i.toString().padStart(3, " "));
+for (let y = first_date; y <= last_date; y++) {
+  dates_array.push(y.toString().padStart(3, " "));
 }
 
 const calendar_dates = blank_array.concat(dates_array);
 
-for(let k = 0; k < calendar_dates.length; k += calendar_col_number) {
-  calendar_rows.push(calendar_dates.slice(k, k + calendar_col_number));
+for (let z = 0; z < calendar_dates.length; z += calendar_col_number) {
+  calendar_rows.push(calendar_dates.slice(z, z + calendar_col_number));
 }
 
-for(const calendar_row of calendar_rows) {
+console.log(`       ${cal_month + 1}月 ${cal_year}   `);
+console.log(" 日 月 火 水 木 金 土");
+for (const calendar_row of calendar_rows) {
   console.log(calendar_row.join(""));
 }
