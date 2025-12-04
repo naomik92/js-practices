@@ -31,8 +31,8 @@ for (let i = 0; i < calendarDates.length; i += calendarColNumber) {
   calendarRows.push(calendarDates.slice(i, i + calendarColNumber));
 }
 
-console.log(`       ${calMonth}月 ${calYear}   `);
-console.log(" 日 月 火 水 木 金 土");
+console.log(`      ${calMonth}月 ${calYear}   `);
+console.log("日 月 火 水 木 金 土");
 for (const calendarRow of calendarRows) {
   console.log(calendarRow.join(""));
 }
