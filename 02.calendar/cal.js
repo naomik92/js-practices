@@ -15,23 +15,20 @@ const calDate = new dateFnsTz.TZDate(calYear, calMonth - 1, "Asia/Tokyo");
 const firstDate = dateFns.startOfMonth(calDate);
 const lastDate = dateFns.endOfMonth(calDate);
 
-const blankArray = [];
-const datesArray = [];
+const calendarDates = [];
 const calendarRows = [];
 const calendarColNumber = 7;
 
-for (let x = 0; x < firstDate.getDay(); x++) {
-  blankArray.push("   ");
+for (let i = 0; i < firstDate.getDay(); i++) {
+  calendarDates.push("   ");
 }
 
-for (let y = firstDate.getDate(); y <= lastDate.getDate(); y++) {
-  datesArray.push(y.toString().padStart(3, " "));
+for (let i = firstDate.getDate(); i <= lastDate.getDate(); i++) {
+  calendarDates.push(i.toString().padStart(2, " ").padEnd(3, " "));
 }
 
-const calendarDates = blankArray.concat(datesArray);
-
-for (let z = 0; z < calendarDates.length; z += calendarColNumber) {
-  calendarRows.push(calendarDates.slice(z, z + calendarColNumber));
+for (let i = 0; i < calendarDates.length; i += calendarColNumber) {
+  calendarRows.push(calendarDates.slice(i, i + calendarColNumber));
 }
 
 console.log(`       ${calMonth}月 ${calYear}   `);
