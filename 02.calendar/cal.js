@@ -6,12 +6,9 @@ import * as dateFnsTz from "@date-fns/tz";
 
 const args = minimist(process.argv.slice(2));
 
-const calYear = args.y || today.getFullYear();
-let calMonth = today.getMonth();
-if (args.m) {
-  calMonth = args.m - 1;
-}
 const today = dateFnsTz.TZDate.tz("Asia/Tokyo");
+const calYear = args.y ?? today.getFullYear();
+const calMonth = args.m ?? today.getMonth() + 1;
 
 const calDate = new dateFnsTz.TZDate(calYear, calMonth - 1, "Asia/Tokyo");
 
