@@ -20,19 +20,19 @@ const calendarRows = [];
 const calendarColNumber = 7;
 
 for (let i = 0; i < firstDate.getDay(); i++) {
-  calendarDates.push("   ");
+  calendarDates.push("  ");
 }
 
 for (let i = firstDate.getDate(); i <= lastDate.getDate(); i++) {
-  calendarDates.push(i.toString().padStart(2, " ").padEnd(3, " "));
+  calendarDates.push(i.toString().padStart(2, " "));
 }
 
 for (let i = 0; i < calendarDates.length; i += calendarColNumber) {
   calendarRows.push(calendarDates.slice(i, i + calendarColNumber));
 }
 
-console.log(`      ${calMonth}月 ${calYear}   `);
+console.log(`      ${calMonth}月 ${calYear}`);
 console.log("日 月 火 水 木 金 土");
 for (const calendarRow of calendarRows) {
-  console.log(calendarRow.join(""));
+  console.log(calendarRow.join(" "));
 }
