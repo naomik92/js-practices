@@ -10,5 +10,10 @@
     "globals": "^15.13.0",
     "prettier": "^3.4.2"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@date-fns/tz": "^1.4.1",
+    "date-fns": "^4.1.0",
+    "minimist": "^1.2.8"
+  }
 }
