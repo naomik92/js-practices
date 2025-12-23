@@ -6,7 +6,7 @@ const sqlite3 = sqlite3Module.verbose();
 const db = new sqlite3.Database(":memory:");
 
 function dbRun(sql) {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     db.run(sql, function (err) {
       if (err) {
         reject(err.message);
@@ -18,8 +18,8 @@ function dbRun(sql) {
 }
 
 function dbAll(sql) {
-  return new Promise(function (resolve, reject) {
-    db.all(sql, function (err, rows) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, (err, rows) => {
       if (err) {
         reject(err.message);
       } else {
@@ -30,8 +30,8 @@ function dbAll(sql) {
 }
 
 function dbClose() {
-  return new Promise(function (resolve, reject) {
-    db.close(function (err) {
+  return new Promise((resolve, reject) => {
+    db.close((err) => {
       if (err) {
         reject(err.message);
       } else {
@@ -45,14 +45,14 @@ async function promisePractice() {
   dbRun(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
-    .then(function () {
+    .then(() => {
       return dbRun("INSERT INTO books(title) VALUES('n-book')");
     })
-    .then(function (result) {
+    .then((result) => {
       console.log(result);
       return dbAll("SELECT * FROM books");
     })
-    .then(function (result) {
+    .then((result) => {
       console.log(result);
       return dbRun("DROP TABLE books");
     });
@@ -62,17 +62,17 @@ async function promisePractice() {
   dbRun(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
-    .then(function () {
+    .then(() => {
       return dbRun("INSERT INTO books(title) VALUES('n-book')");
     })
-    .then(function () {
+    .then(() => {
       return dbRun("INSERT INTO books(title) VALUES('n-book')");
     })
-    .catch(function (result) {
+    .catch((result) => {
       console.log(result);
       return dbAll("SELECT * FROM book");
     })
-    .catch(function (result) {
+    .catch((result) => {
       console.log(result);
       return dbRun("DROP TABLE books");
     });

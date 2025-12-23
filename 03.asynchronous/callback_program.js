@@ -8,10 +8,10 @@ const db = new sqlite3.Database(":memory:");
 async function callbackPractice() {
   db.run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
-    function () {
+    () => {
       db.run("INSERT INTO books(title) VALUES('n-book')", function () {
         console.log(this.lastID);
-        db.all("SELECT * FROM books", function (err, row) {
+        db.all("SELECT * FROM books", (err, row) => {
           console.log(row);
           db.run("DROP TABLE books");
         });
@@ -23,13 +23,15 @@ async function callbackPractice() {
 
   db.run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
-    function () {
-      db.run("INSERT INTO books(title) VALUES('n-book')", function () {
-        db.run("INSERT INTO books(title) VALUES('n-book')", function (err) {
+    () => {
+      db.run("INSERT INTO books(title) VALUES('n-book')", () => {
+        db.run("INSERT INTO books(title) VALUES('n-book')", (err) => {
           console.error(err.message);
-          db.all("SELECT * FROM book", function (err) {
+          db.all("SELECT * FROM book", (err) => {
             console.error(err.message);
-            db.run("DROP TABLE books");
+            db.run("DROP TABLE books", () => {
+              db.close();
+            });
           });
         });
       });
@@ -37,4 +39,5 @@ async function callbackPractice() {
   );
 }
 
+console.log("プラクティス「1. コールバック」の実行結果です");
 callbackPractice();
