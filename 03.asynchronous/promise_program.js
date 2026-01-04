@@ -2,43 +2,8 @@
 
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
+import { dbRun, dbAll, dbClose } from "./program_functions.js";
 const db = new sqlite3.Database(":memory:");
-
-function dbRun(db, sql) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(this.lastID);
-      }
-    });
-  });
-}
-
-function dbAll(db, sql) {
-  return new Promise((resolve, reject) => {
-    db.all(sql, (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-}
-
-function dbClose(db) {
-  return new Promise((resolve, reject) => {
-    db.close((err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
 
 async function promisePractice(db) {
   dbRun(
