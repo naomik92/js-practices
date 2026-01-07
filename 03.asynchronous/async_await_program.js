@@ -40,38 +40,44 @@ function dbClose(db) {
   });
 }
 
-async function promisePractice(db) {
-  dbRun(
+async function asyncPractice() {
+  await dbRun(
     db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
-  )
-    .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
-    .then((generatedId) => {
-      console.log(generatedId);
-      return dbAll(db, "SELECT * FROM books");
-    })
-    .then((records) => {
-      console.log(records);
-      return dbRun(db, "DROP TABLE books");
-    });
+  );
+  const result1 = await dbRun(db, "INSERT INTO books(title) VALUES('n-book')");
+  console.log(result1);
+  const result2 = await dbAll(db, "SELECT * FROM books");
+  console.log(result2);
+  await dbRun(db, "DROP TABLE books");
 
   await timers.setTimeout(100);
 
-  dbRun(
+  await dbRun(
     db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
-  )
-    .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
-    .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
-    .catch((err) => {
+  );
+  await dbRun(db, "INSERT INTO books(title) VALUES('n-book')");
+  try {
+    await dbRun(db, "INSERT INTO books(title) VALUES('n-book')");
+  } catch (err) {
+    if (err.message.includes("SQLITE_CONSTRAINT")) {
       console.error(err.message);
-      return dbAll(db, "SELECT * FROM book");
-    })
-    .catch((err) => {
+    } else {
+      throw err;
+    }
+  }
+  try {
+    await dbAll(db, "SELECT * FROM book");
+  } catch (err) {
+    if (err.message.includes("SQLITE_ERROR")) {
       console.error(err.message);
-      return dbRun(db, "DROP TABLE books");
-    })
-    .then(() => dbClose(db));
+    } else {
+      throw err;
+    }
+  }
+  await dbRun(db, "DROP TABLE books");
+  await dbClose(db);
 }
 
-promisePractice(db);
+asyncPractice();
