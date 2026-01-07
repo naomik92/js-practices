@@ -4,11 +4,11 @@ import sqlite3 from "sqlite3";
 import timers from "timers/promises";
 const db = new sqlite3.Database(":memory:");
 
-function dbRun(sql) {
+function dbRun(db, sql) {
   return new Promise((resolve, reject) => {
     db.run(sql, function (err) {
       if (err) {
-        reject(err.message);
+        reject(err);
       } else {
         resolve(this.lastID);
       }
@@ -16,11 +16,11 @@ function dbRun(sql) {
   });
 }
 
-function dbAll(sql) {
+function dbAll(db, sql) {
   return new Promise((resolve, reject) => {
     db.all(sql, (err, rows) => {
       if (err) {
-        reject(err.message);
+        reject(err);
       } else {
         resolve(rows);
       }
@@ -28,11 +28,11 @@ function dbAll(sql) {
   });
 }
 
-function dbClose() {
+function dbClose(db) {
   return new Promise((resolve, reject) => {
     db.close((err) => {
       if (err) {
-        reject(err.message);
+        reject(err);
       } else {
         resolve();
       }
@@ -40,43 +40,37 @@ function dbClose() {
   });
 }
 
-async function promisePractice() {
+async function promisePractice(db) {
   dbRun(
+    db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
-    .then(() => {
-      return dbRun("INSERT INTO books(title) VALUES('n-book')");
+    .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
+    .then((generatedId) => {
+      console.log(generatedId);
+      return dbAll(db, "SELECT * FROM books");
     })
-    .then((result) => {
-      console.log(result);
-      return dbAll("SELECT * FROM books");
-    })
-    .then((result) => {
-      console.log(result);
-      return dbRun("DROP TABLE books");
+    .then((records) => {
+      console.log(records);
+      return dbRun(db, "DROP TABLE books");
     });
 
   await timers.setTimeout(100);
 
   dbRun(
+    db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
-    .then(() => {
-      return dbRun("INSERT INTO books(title) VALUES('n-book')");
-    })
-    .then(() => {
-      return dbRun("INSERT INTO books(title) VALUES('n-book')");
+    .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
+    .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
+      return dbAll(db, "SELECT * FROM book");
     })
     .catch((result) => {
       console.log(result);
-      return dbAll("SELECT * FROM book");
+      return dbRun(db, "DROP TABLE books");
     })
     .catch((result) => {
       console.log(result);
-      return dbRun("DROP TABLE books");
-    });
-}
-
 async function asyncPractice() {
   await dbRun(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
