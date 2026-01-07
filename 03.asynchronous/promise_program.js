@@ -63,14 +63,14 @@ async function promisePractice(db) {
   )
     .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
     .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
+    .catch((err) => {
+      console.error(err.message);
       return dbAll(db, "SELECT * FROM book");
     })
-    .catch((result) => {
-      console.log(result);
+    .catch((err) => {
+      console.error(err.message);
       return dbRun(db, "DROP TABLE books");
     })
-    .catch((result) => {
-      console.log(result);
 async function asyncPractice() {
   await dbRun(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
