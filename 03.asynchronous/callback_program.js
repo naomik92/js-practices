@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import sqlite3Module from "sqlite3";
+import sqlite3 from "sqlite3";
 import timers from "timers/promises";
-const sqlite3 = sqlite3Module.verbose();
 const db = new sqlite3.Database(":memory:");
 
 async function callbackPractice() {
