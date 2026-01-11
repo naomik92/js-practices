@@ -10,12 +10,12 @@ dbRun(
   "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
-  .then((generatedId) => {
-    console.log(generatedId);
+  .then((this_object) => {
+    console.log(this_object.lastID);
     return dbAll(db, "SELECT * FROM books");
   })
-  .then((records) => {
-    console.log(records);
+  .then((rows) => {
+    console.log(rows);
     return dbRun(db, "DROP TABLE books");
   });
 

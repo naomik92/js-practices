@@ -9,10 +9,13 @@ async function main() {
     db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
-  const result1 = await dbRun(db, "INSERT INTO books(title) VALUES('n-book')");
-  console.log(result1);
-  const result2 = await dbAll(db, "SELECT * FROM books");
-  console.log(result2);
+  const this_object = await dbRun(
+    db,
+    "INSERT INTO books(title) VALUES('n-book')",
+  );
+  console.log(this_object.lastID);
+  const rows = await dbAll(db, "SELECT * FROM books");
+  console.log(rows);
   await dbRun(db, "DROP TABLE books");
 
   await dbRun(
