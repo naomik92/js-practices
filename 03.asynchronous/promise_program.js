@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import sqlite3 from "sqlite3";
 import timers from "timers/promises";
+import sqlite3 from "sqlite3";
 import { dbRun, dbAll, dbClose } from "./program_functions.js";
 
 async function promisePractice() {
