@@ -3,9 +3,9 @@
 import sqlite3 from "sqlite3";
 import timers from "timers/promises";
 import { dbRun, dbAll, dbClose } from "./program_functions.js";
-const db = new sqlite3.Database(":memory:");
 
-async function asyncPractice(db) {
+async function asyncPractice() {
+  const db = new sqlite3.Database(":memory:");
   await dbRun(
     db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
@@ -45,4 +45,4 @@ async function asyncPractice(db) {
   await dbClose(db);
 }
 
-asyncPractice(db);
+asyncPractice();
