@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-import timers from "timers/promises";
 import sqlite3 from "sqlite3";
 import { dbRun, dbAll, dbClose } from "./program_functions.js";
 
-async function asyncPractice() {
+async function main() {
   const db = new sqlite3.Database(":memory:");
   await dbRun(
     db,
@@ -15,8 +14,6 @@ async function asyncPractice() {
   const result2 = await dbAll(db, "SELECT * FROM books");
   console.log(result2);
   await dbRun(db, "DROP TABLE books");
-
-  await timers.setTimeout(100);
 
   await dbRun(
     db,
@@ -45,4 +42,4 @@ async function asyncPractice() {
   await dbClose(db);
 }
 
-asyncPractice();
+main();
