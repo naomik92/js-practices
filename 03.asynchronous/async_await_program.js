@@ -26,7 +26,7 @@ async function main() {
   try {
     await dbRun(db, "INSERT INTO books(title) VALUES('n-book')");
   } catch (err) {
-    if (err.message.includes("SQLITE_CONSTRAINT")) {
+    if (err.code.startsWith("SQLITE_")) {
       console.error(err.message);
     } else {
       throw err;
@@ -35,7 +35,7 @@ async function main() {
   try {
     await dbAll(db, "SELECT * FROM book");
   } catch (err) {
-    if (err.message.includes("SQLITE_ERROR")) {
+    if (err.code.startsWith("SQLITE_")) {
       console.error(err.message);
     } else {
       throw err;
