@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import sqlite3 from "sqlite3";
-import { dbRun, dbAll, dbClose } from "./promise-based_sqlite3_functions.js";
+import { dbRun, dbAll, dbClose } from "./promise_based_sqlite3_functions.js";
 
 const db = new sqlite3.Database(":memory:");
 await dbRun(
