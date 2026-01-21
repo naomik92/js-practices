@@ -26,7 +26,7 @@ async function main() {
   try {
     await dbRun(db, "INSERT INTO books(title) VALUES('n-book')");
   } catch (err) {
-    if (err.code.startsWith("SQLITE_")) {
+    if (err instanceof Error && err.code.startsWith("SQLITE_")) {
       console.error(err.message);
     } else {
       throw err;
@@ -35,7 +35,7 @@ async function main() {
   try {
     await dbAll(db, "SELECT * FROM book");
   } catch (err) {
-    if (err.code.startsWith("SQLITE_")) {
+    if (err instanceof Error && err.code.startsWith("SQLITE_")) {
       console.error(err.message);
     } else {
       throw err;
