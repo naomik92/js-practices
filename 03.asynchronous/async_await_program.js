@@ -8,11 +8,11 @@ await dbRun(
   db,
   "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 );
-const this_object = await dbRun(
+const insertedRow = await dbRun(
   db,
   "INSERT INTO books(title) VALUES('n-book')",
 );
-console.log(this_object.lastID);
+console.log(insertedRow.lastID);
 const rows = await dbAll(db, "SELECT * FROM books");
 console.log(rows);
 await dbRun(db, "DROP TABLE books");

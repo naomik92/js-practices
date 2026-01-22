@@ -10,8 +10,8 @@ dbRun(
   "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() => dbRun(db, "INSERT INTO books(title) VALUES('n-book')"))
-  .then((this_object) => {
-    console.log(this_object.lastID);
+  .then((insertedRow) => {
+    console.log(insertedRow.lastID);
     return dbAll(db, "SELECT * FROM books");
   })
   .then((rows) => {
