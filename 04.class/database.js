@@ -21,12 +21,12 @@ export class Database {
     this.db.close();
   }
 
-  async createData() {
+  async createData(memoData) {
     await this.run(
       "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, details TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
     );
     try {
-      await this.run("INSERT INTO memos(details) VALUES('何かメモが入る')");
+      await this.run("INSERT INTO memos(details) VALUES(?)", memoData);
       console.log("メモが保存されました");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
