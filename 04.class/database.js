@@ -17,6 +17,18 @@ export class Database {
     });
   }
 
+  all(sql) {
+    return new Promise((resolve, reject) => {
+      this.db.all(sql, (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  }
+
   close() {
     this.db.close();
   }
@@ -36,6 +48,21 @@ export class Database {
       }
     }
     await this.close();
-    console.log("DBがクローズされました");
+  }
+
+  async readAllData() {
+    await this.run(
+      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, details TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+    );
+    try {
+      return await this.all("SELECT * FROM memos");
+    } catch (err) {
+      if (err instanceof Error && err.code.startsWith("SQLITE_")) {
+        console.error(err.message);
+      } else {
+        throw err;
+      }
+    }
+    await this.close();
   }
 }
