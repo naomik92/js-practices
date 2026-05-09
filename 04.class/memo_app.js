@@ -1,3 +1,4 @@
+import * as readline from "node:readline";
 import { Database } from "./database.js";
 import { Display } from "./display.js";
 
@@ -7,13 +8,38 @@ export class MemoApp {
     this.display = new Display();
   }
 
+  organizeMemo() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    return new Promise((resolve) => {
+      console.log(
+        "【メモを登録します。入力が終わったら改行後にCtrl+Dを押してください。】",
+      );
+      const lines = [];
+
+      rl.on("line", (line) => {
+        lines.push(line);
+      });
+
+      rl.on("close", () => {
+        console.log("【メモを登録しました】");
+        resolve(lines.join("\n"));
+      });
+    });
+  }
+
   run(args) {
     if (args.includes("-l")) {
       this.display.allMemo().then((result) => {
         console.log(result);
       });
     } else {
-      this.db.createData(args);
+      this.organizeMemo().then((result) => {
+        this.db.createData(result);
+      });
     }
   }
 }
