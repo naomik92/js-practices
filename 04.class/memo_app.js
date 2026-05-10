@@ -25,7 +25,6 @@ export class MemoApp {
       });
 
       rl.on("close", () => {
-        console.log("【メモを登録しました】");
         resolve(lines.join("\n"));
       });
     });
@@ -33,7 +32,11 @@ export class MemoApp {
 
   run(args) {
     if (args.includes("-l")) {
-      this.display.allMemo().then((result) => {
+      this.display.buildDetails().then((result) => {
+        console.log(result);
+      });
+    } else if (args.includes("-r")) {
+      this.display.buildMemoList().then((result) => {
         console.log(result);
       });
     } else {

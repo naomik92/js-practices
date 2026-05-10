@@ -39,7 +39,7 @@ export class Database {
     );
     try {
       await this.run("INSERT INTO memos(details) VALUES(?)", memoData);
-      console.log("メモが保存されました");
+      console.log("【メモが保存されました】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);
