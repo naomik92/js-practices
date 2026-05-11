@@ -30,19 +30,15 @@ export class MemoApp {
     });
   }
 
-  run(args) {
+  async run(args) {
     if (args.includes("-l")) {
-      this.display.buildDetails().then((result) => {
-        console.log(result);
-      });
+      const result = await this.display.buildDetails();
+      console.log(result.map((obj) => obj.title).join("\n"));
     } else if (args.includes("-r")) {
-      this.display.buildMemoList().then((result) => {
-        console.log(result);
-      });
+      this.display.buildSelectPrompt();
     } else {
-      this.organizeMemo().then((result) => {
-        this.db.createData(result);
-      });
+      const result = await this.organizeMemo();
+      await this.db.createData(result);
     }
   }
 }

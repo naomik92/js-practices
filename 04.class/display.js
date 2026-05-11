@@ -1,3 +1,5 @@
+import enquirer from "enquirer";
+const { Select } = enquirer;
 import { Database } from "./database.js";
 
 export class Display {
@@ -7,22 +9,30 @@ export class Display {
 
   async buildDetails() {
     const allData = await this.db.readAllData();
-    return allData.map((obj) => obj.details);
-  }
-
-  async buildTitles() {
-    const allData = await this.buildDetails();
-    return allData.map((str) => str.split("\n")[0]);
-  }
-
-  async buildMemoList() {
-    const titles = await this.buildTitles();
-    const details = await this.buildDetails();
-    return titles.map((title, index) => {
+    return allData.map((obj) => {
       return {
-        title: title,
-        detail: details[index],
+        title: obj.detail.split("\n")[0],
+        detail: obj.detail,
+        created_time: obj.created_at,
       };
     });
+  }
+
+  async buildSelectPrompt() {
+    const memoList = await this.buildDetails();
+    const prompt = new Select({
+      message: "Choose a note you want to see:",
+      choices: memoList,
+    });
+
+    prompt
+      .run()
+      .then((answer) => {
+        const indexOfAnswer = prompt.choices.findIndex((obj) => {
+          return obj.title === answer;
+        });
+        console.log(prompt.choices[indexOfAnswer].detail);
+      })
+      .catch(console.error);
   }
 }

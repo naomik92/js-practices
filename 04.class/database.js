@@ -35,10 +35,10 @@ export class Database {
 
   async createData(memoData) {
     await this.run(
-      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, details TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
     );
     try {
-      await this.run("INSERT INTO memos(details) VALUES(?)", memoData);
+      await this.run("INSERT INTO memos(detail) VALUES(?)", memoData);
       console.log("【メモが保存されました】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
@@ -52,10 +52,24 @@ export class Database {
 
   async readAllData() {
     await this.run(
-      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, details TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
     );
     try {
       return await this.all("SELECT * FROM memos");
+    } catch (err) {
+      if (err instanceof Error && err.code.startsWith("SQLITE_")) {
+        console.error(err.message);
+      } else {
+        throw err;
+      }
+    }
+    await this.close();
+  }
+
+  async deleteData() {
+    await this.run("DELETE FROM memos WHERE created_at = created_time");
+    try {
+      console.log("【メモが削除されました】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);
