@@ -33,21 +33,22 @@ export class Database {
     this.db.close();
   }
 
-  async createData(memoData) {
+  async createData(memoDetail) {
     await this.run(
       "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
     );
     try {
-      await this.run("INSERT INTO memos(detail) VALUES(?)", memoData);
-      console.log("【メモが保存されました】");
+      await this.run("INSERT INTO memos(detail) VALUES(?)", memoDetail);
+      console.log("【The memo was successfully created.】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);
       } else {
         throw err;
       }
+    } finally {
+      await this.close();
     }
-    await this.close();
   }
 
   async readAllData() {
@@ -62,21 +63,23 @@ export class Database {
       } else {
         throw err;
       }
+    } finally {
+      await this.close();
     }
-    await this.close();
   }
 
-  async deleteData() {
-    await this.run("DELETE FROM memos WHERE created_at = created_time");
+  async deleteData(memoId) {
     try {
-      console.log("【メモが削除されました】");
+      await this.run("DELETE FROM memos WHERE id = ?", memoId);
+      console.log("【The memo was successfully deleted.】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);
       } else {
         throw err;
       }
+    } finally {
+      await this.close();
     }
-    await this.close();
   }
 }

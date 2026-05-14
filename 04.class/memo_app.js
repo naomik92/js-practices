@@ -15,9 +15,6 @@ export class MemoApp {
     });
 
     return new Promise((resolve) => {
-      console.log(
-        "【メモを登録します。入力が終わったら改行後にCtrl+Dを押してください。】",
-      );
       const lines = [];
 
       rl.on("line", (line) => {
@@ -36,9 +33,12 @@ export class MemoApp {
       console.log(result.map((obj) => obj.title).join("\n"));
     } else if (args.includes("-r")) {
       this.display.buildSelectPrompt();
+    } else if (args.includes("-d")) {
+      const memoId = await this.display.buildDeletePrompt();
+      await this.db.deleteData(memoId);
     } else {
-      const result = await this.organizeMemo();
-      await this.db.createData(result);
+      const memoDetail = await this.organizeMemo();
+      await this.db.createData(memoDetail);
     }
   }
 }

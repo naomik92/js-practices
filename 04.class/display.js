@@ -11,9 +11,9 @@ export class Display {
     const allData = await this.db.readAllData();
     return allData.map((obj) => {
       return {
+        id: obj.id,
         title: obj.detail.split("\n")[0],
         detail: obj.detail,
-        created_time: obj.created_at,
       };
     });
   }
@@ -32,6 +32,24 @@ export class Display {
           return obj.title === answer;
         });
         console.log(prompt.choices[indexOfAnswer].detail);
+      })
+      .catch(console.error);
+  }
+
+  async buildDeletePrompt() {
+    const memoList = await this.buildDetails();
+    const prompt = new Select({
+      message: "Choose a memo you want to delete:",
+      choices: memoList,
+    });
+
+    return prompt
+      .run()
+      .then((answer) => {
+        const indexOfAnswer = prompt.choices.findIndex((obj) => {
+          return obj.title === answer;
+        });
+        return prompt.choices[indexOfAnswer].id;
       })
       .catch(console.error);
   }
