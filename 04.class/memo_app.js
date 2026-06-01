@@ -28,17 +28,23 @@ export class MemoApp {
   }
 
   async run(args) {
-    if (args.includes("-l")) {
-      const result = await this.display.buildDetails();
-      console.log(result.map((obj) => obj.title).join("\n"));
-    } else if (args.includes("-r")) {
-      this.display.buildSelectPrompt();
-    } else if (args.includes("-d")) {
-      const memoId = await this.display.buildDeletePrompt();
-      await this.db.deleteData(memoId);
-    } else {
-      const memoDetail = await this.organizeMemo();
-      await this.db.createData(memoDetail);
+    try {
+      if (args.includes("-l")) {
+        const result = await this.display.buildDetails();
+        console.log(result.map((obj) => obj.title).join("\n"));
+      } else if (args.includes("-r")) {
+        this.display.buildSelectPrompt();
+      } else if (args.includes("-d")) {
+        const memoId = await this.display.buildDeletePrompt();
+        await this.db.deleteData(memoId);
+      } else if (args.length === 0) {
+        const memoDetail = await this.organizeMemo();
+        await this.db.createData(memoDetail);
+      } else {
+        console.log("【Invalid option entered.】");
+      }
+    } catch (err) {
+      console.error(err.message);
     }
   }
 }
