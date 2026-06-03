@@ -33,10 +33,21 @@ export class Database {
     this.db.close();
   }
 
+  async createTable() {
+    try {
+      await this.run(
+        "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+      );
+    } catch (err) {
+      if (err instanceof Error && err.code.startsWith("SQLITE_")) {
+        console.error(err.message);
+      } else {
+        throw err;
+      }
+    }
+  }
+
   async createData(memoDetail) {
-    await this.run(
-      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
-    );
     try {
       await this.run("INSERT INTO memos(detail) VALUES(?)", memoDetail);
       console.log("【The memo was successfully created.】");
@@ -52,9 +63,6 @@ export class Database {
   }
 
   async readAllData() {
-    await this.run(
-      "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
-    );
     try {
       return await this.all("SELECT * FROM memos");
     } catch (err) {

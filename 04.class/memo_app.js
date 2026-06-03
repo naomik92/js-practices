@@ -8,6 +8,10 @@ export class MemoApp {
     this.display = new Display();
   }
 
+  async create() {
+    await this.db.createTable();
+  }
+
   organizeMemo() {
     const rl = readline.createInterface({
       input: process.stdin,
