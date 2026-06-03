@@ -64,7 +64,7 @@ export class Database {
 
   async readAllData() {
     try {
-      return await this.all("SELECT * FROM memos");
+      return await this.all("SELECT * FROM memos ORDER BY id ASC");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);
