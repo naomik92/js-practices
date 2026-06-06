@@ -34,8 +34,8 @@ export class MemoApp {
   async run(args) {
     try {
       if (args.includes("-l")) {
-        const result = await this.display.buildDetails();
-        console.log(result.map((obj) => obj.title).join("\n"));
+        const memoList = await this.display.buildMemoList();
+        console.log(memoList.map((obj) => obj.title).join("\n"));
       } else if (args.includes("-r")) {
         this.display.buildSelectPrompt();
       } else if (args.includes("-d")) {

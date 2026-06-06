@@ -7,7 +7,7 @@ export class Display {
     this.db = new Database("db/memos.db");
   }
 
-  async buildDetails() {
+  async buildMemoList() {
     const allData = await this.db.readAllData();
     return allData.map((obj) => {
       return {
@@ -19,7 +19,7 @@ export class Display {
   }
 
   async buildSelectPrompt() {
-    const memoList = await this.buildDetails();
+    const memoList = await this.buildMemoList();
     const prompt = new Select({
       message: "Choose a note you want to see:",
       choices: memoList,
@@ -37,7 +37,7 @@ export class Display {
   }
 
   async buildDeletePrompt() {
-    const memoList = await this.buildDetails();
+    const memoList = await this.buildMemoList();
     const prompt = new Select({
       message: "Choose a memo you want to delete:",
       choices: memoList,
