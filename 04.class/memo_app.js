@@ -40,10 +40,10 @@ export class MemoApp {
         this.display.buildSelectPrompt();
       } else if (args.includes("-d")) {
         const memoId = await this.display.buildDeletePrompt();
-        await this.db.deleteData(memoId);
+        await this.db.deleteMemo(memoId);
       } else if (args.length === 0) {
         const memoDetail = await this.organizeMemo();
-        await this.db.createData(memoDetail);
+        await this.db.createMemo(memoDetail);
       } else {
         console.log("【Invalid option entered.】");
       }

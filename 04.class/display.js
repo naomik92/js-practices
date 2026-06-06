@@ -8,12 +8,12 @@ export class Display {
   }
 
   async buildMemoList() {
-    const allData = await this.db.readAllData();
-    return allData.map((obj) => {
+    const allMemos = await this.db.readAllMemos();
+    return allMemos.map((memo) => {
       return {
-        id: obj.id,
-        title: obj.detail.split("\n")[0],
-        detail: obj.detail,
+        id: memo.id,
+        title: memo.detail.split("\n")[0],
+        detail: memo.detail,
       };
     });
   }

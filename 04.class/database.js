@@ -47,7 +47,7 @@ export class Database {
     }
   }
 
-  async createData(memoDetail) {
+  async createMemo(memoDetail) {
     try {
       await this.run("INSERT INTO memos(detail) VALUES(?)", memoDetail);
       console.log("【The memo was successfully created.】");
@@ -62,7 +62,7 @@ export class Database {
     }
   }
 
-  async readAllData() {
+  async readAllMemos() {
     try {
       return await this.all("SELECT * FROM memos ORDER BY id ASC");
     } catch (err) {
@@ -76,7 +76,7 @@ export class Database {
     }
   }
 
-  async deleteData(memoId) {
+  async deleteMemo(memoId) {
     try {
       await this.run("DELETE FROM memos WHERE id = ?", memoId);
       console.log("【The memo was successfully deleted.】");
