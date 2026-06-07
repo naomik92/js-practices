@@ -50,7 +50,6 @@ export class Database {
   async createMemo(memoDetail) {
     try {
       await this.run("INSERT INTO memos(detail) VALUES(?)", memoDetail);
-      console.log("【The memo was successfully created.】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);
@@ -79,7 +78,6 @@ export class Database {
   async deleteMemo(memoId) {
     try {
       await this.run("DELETE FROM memos WHERE id = ?", memoId);
-      console.log("【The memo was successfully deleted.】");
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);

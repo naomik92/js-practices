@@ -41,9 +41,11 @@ export class MemoApp {
       } else if (args.includes("-d")) {
         const memoId = await this.display.buildDeletePrompt();
         await this.db.deleteMemo(memoId);
+        console.log("【The memo was successfully deleted.】");
       } else if (args.length === 0) {
         const memoDetail = await this.organizeMemo();
         await this.db.createMemo(memoDetail);
+        console.log("【The memo was successfully created.】");
       } else {
         console.log("【Invalid option entered.】");
       }
