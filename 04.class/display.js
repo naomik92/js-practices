@@ -18,7 +18,7 @@ export class Display {
     });
   }
 
-  async buildSelectPrompt() {
+  async selectAndDisplayDetail() {
     const memoList = await this.buildMemoList();
     const prompt = new Select({
       message: "Choose a note you want to see:",
@@ -36,7 +36,7 @@ export class Display {
       .catch(console.error);
   }
 
-  async buildDeletePrompt() {
+  async selectMemoIdToDelete() {
     const memoList = await this.buildMemoList();
     const prompt = new Select({
       message: "Choose a memo you want to delete:",

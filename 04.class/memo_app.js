@@ -12,7 +12,7 @@ export class MemoApp {
     await this.db.createTable();
   }
 
-  organizeMemo() {
+  createMemoDetail() {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -37,13 +37,13 @@ export class MemoApp {
         const memoList = await this.display.buildMemoList();
         console.log(memoList.map((obj) => obj.title).join("\n"));
       } else if (args.includes("-r")) {
-        this.display.buildSelectPrompt();
+        this.display.selectAndDisplayDetail();
       } else if (args.includes("-d")) {
-        const memoId = await this.display.buildDeletePrompt();
+        const memoId = await this.display.selectMemoIdToDelete();
         await this.db.deleteMemo(memoId);
         console.log("【The memo was successfully deleted.】");
       } else if (args.length === 0) {
-        const memoDetail = await this.organizeMemo();
+        const memoDetail = await this.createMemoDetail();
         await this.db.createMemo(memoDetail);
         console.log("【The memo was successfully created.】");
       } else {
