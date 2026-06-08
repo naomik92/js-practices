@@ -7,19 +7,8 @@ export class Display {
     this.db = new Database("db/memos.db");
   }
 
-  async buildMemoList() {
-    const allMemos = await this.db.readAllMemos();
-    return allMemos.map((memo) => {
-      return {
-        id: memo.id,
-        title: memo.detail.split("\n")[0],
-        detail: memo.detail,
-      };
-    });
-  }
-
   async selectAndDisplayDetail() {
-    const memoList = await this.buildMemoList();
+    const memoList = await this.db.readAllMemos();
     const prompt = new Select({
       message: "Choose a note you want to see:",
       choices: memoList,
@@ -28,8 +17,8 @@ export class Display {
     prompt
       .run()
       .then((answer) => {
-        const indexOfAnswer = prompt.choices.findIndex((obj) => {
-          return obj.title === answer;
+        const indexOfAnswer = prompt.choices.findIndex((memo) => {
+          return memo.title === answer;
         });
         console.log(prompt.choices[indexOfAnswer].detail);
       })
@@ -37,7 +26,7 @@ export class Display {
   }
 
   async selectMemoIdToDelete() {
-    const memoList = await this.buildMemoList();
+    const memoList = await this.db.readAllMemos();
     const prompt = new Select({
       message: "Choose a memo you want to delete:",
       choices: memoList,
@@ -46,8 +35,8 @@ export class Display {
     return prompt
       .run()
       .then((answer) => {
-        const indexOfAnswer = prompt.choices.findIndex((obj) => {
-          return obj.title === answer;
+        const indexOfAnswer = prompt.choices.findIndex((memo) => {
+          return memo.title === answer;
         });
         return prompt.choices[indexOfAnswer].id;
       })

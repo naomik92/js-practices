@@ -36,7 +36,7 @@ export class Database {
   async createTable() {
     try {
       await this.run(
-        "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "CREATE TABLE IF NOT EXISTS memos(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, detail TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
       );
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
@@ -47,9 +47,12 @@ export class Database {
     }
   }
 
-  async createMemo(memoDetail) {
+  async createMemo(memoTitle, memoDetail) {
     try {
-      await this.run("INSERT INTO memos(detail) VALUES(?)", memoDetail);
+      await this.run("INSERT INTO memos(title, detail) VALUES(?, ?)", [
+        memoTitle,
+        memoDetail,
+      ]);
     } catch (err) {
       if (err instanceof Error && err.code.startsWith("SQLITE_")) {
         console.error(err.message);

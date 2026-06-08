@@ -34,8 +34,8 @@ export class MemoApp {
   async run(args) {
     try {
       if (args.includes("-l")) {
-        const memoList = await this.display.buildMemoList();
-        console.log(memoList.map((obj) => obj.title).join("\n"));
+        const memoList = await this.db.readAllMemos();
+        console.log(memoList.map((memo) => memo.title).join("\n"));
       } else if (args.includes("-r")) {
         this.display.selectAndDisplayDetail();
       } else if (args.includes("-d")) {
@@ -44,7 +44,8 @@ export class MemoApp {
         console.log("【The memo was successfully deleted.】");
       } else if (args.length === 0) {
         const memoDetail = await this.createMemoDetail();
-        await this.db.createMemo(memoDetail);
+        const memoTitle = memoDetail.split("\n")[0];
+        await this.db.createMemo(memoTitle, memoDetail);
         console.log("【The memo was successfully created.】");
       } else {
         console.log("【Invalid option entered.】");
