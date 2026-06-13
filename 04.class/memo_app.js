@@ -36,11 +36,11 @@ export class MemoApp {
       if (args.includes("-l")) {
         const memoList = await this.db.readAllMemos();
         console.log(memoList.map((memo) => memo.title).join("\n"));
-        await this.db.close();
+        // await this.db.close();
       } else if (args.includes("-r")) {
         const memoList = await this.db.readAllMemos();
         this.display.selectAndDisplayDetail(memoList);
-        await this.db.close();
+        // await this.db.close();
       } else if (args.includes("-d")) {
         const memoList = await this.db.readAllMemos();
         const memoId = await this.display.selectMemoIdToDelete(memoList);
@@ -57,5 +57,9 @@ export class MemoApp {
     } catch (err) {
       console.error(err.message);
     }
+  }
+
+  close() {
+    this.db.close();
   }
 }

@@ -59,8 +59,6 @@ export class Database {
       } else {
         throw err;
       }
-    } finally {
-      await this.close();
     }
   }
 
@@ -73,8 +71,6 @@ export class Database {
       } else {
         throw err;
       }
-      // } finally {
-      //   await this.close();
     }
   }
 
@@ -87,8 +83,6 @@ export class Database {
       } else {
         throw err;
       }
-    } finally {
-      await this.close();
     }
   }
 }
