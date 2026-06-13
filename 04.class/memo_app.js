@@ -36,10 +36,14 @@ export class MemoApp {
       if (args.includes("-l")) {
         const memoList = await this.db.readAllMemos();
         console.log(memoList.map((memo) => memo.title).join("\n"));
+        await this.db.close();
       } else if (args.includes("-r")) {
-        this.display.selectAndDisplayDetail();
+        const memoList = await this.db.readAllMemos();
+        this.display.selectAndDisplayDetail(memoList);
+        await this.db.close();
       } else if (args.includes("-d")) {
-        const memoId = await this.display.selectMemoIdToDelete();
+        const memoList = await this.db.readAllMemos();
+        const memoId = await this.display.selectMemoIdToDelete(memoList);
         await this.db.deleteMemo(memoId);
         console.log("【The memo was successfully deleted.】");
       } else if (args.length === 0) {

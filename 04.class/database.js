@@ -73,8 +73,8 @@ export class Database {
       } else {
         throw err;
       }
-    } finally {
-      await this.close();
+      // } finally {
+      //   await this.close();
     }
   }
 

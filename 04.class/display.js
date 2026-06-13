@@ -1,14 +1,8 @@
 import enquirer from "enquirer";
 const { Select } = enquirer;
-import { Database } from "./database.js";
 
 export class Display {
-  constructor() {
-    this.db = new Database("db/memos.db");
-  }
-
-  async selectAndDisplayDetail() {
-    const memoList = await this.db.readAllMemos();
+  async selectAndDisplayDetail(memoList) {
     const prompt = new Select({
       message: "Choose a note you want to see:",
       choices: memoList,
@@ -25,8 +19,7 @@ export class Display {
       .catch(console.error);
   }
 
-  async selectMemoIdToDelete() {
-    const memoList = await this.db.readAllMemos();
+  async selectMemoIdToDelete(memoList) {
     const prompt = new Select({
       message: "Choose a memo you want to delete:",
       choices: memoList,
