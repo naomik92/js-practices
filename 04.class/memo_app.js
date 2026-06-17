@@ -4,12 +4,14 @@ import { Display } from "./display.js";
 
 export class MemoApp {
   constructor() {
-    this.db = new Database("db/memos.db");
     this.display = new Display();
   }
 
-  async create() {
-    await this.db.createTable();
+  static async create() {
+    const memoApp = new MemoApp();
+    memoApp.db = new Database("db/memos.db");
+    memoApp.db.createTable();
+    return memoApp;
   }
 
   createMemoDetail() {
@@ -36,11 +38,9 @@ export class MemoApp {
       if (args.includes("-l")) {
         const memoList = await this.db.readAllMemos();
         console.log(memoList.map((memo) => memo.title).join("\n"));
-        // await this.db.close();
       } else if (args.includes("-r")) {
         const memoList = await this.db.readAllMemos();
         this.display.selectAndDisplayDetail(memoList);
-        // await this.db.close();
       } else if (args.includes("-d")) {
         const memoList = await this.db.readAllMemos();
         const memoId = await this.display.selectMemoIdToDelete(memoList);
