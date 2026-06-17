@@ -14,7 +14,7 @@ export class MemoApp {
     return memoApp;
   }
 
-  createMemoDetail() {
+  readMemoDetail() {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -47,7 +47,7 @@ export class MemoApp {
         await this.db.deleteMemo(memoId);
         console.log("【The memo was successfully deleted.】");
       } else if (args.length === 0) {
-        const memoDetail = await this.createMemoDetail();
+        const memoDetail = await this.readMemoDetail();
         const memoTitle = memoDetail.split("\n")[0];
         await this.db.createMemo(memoTitle, memoDetail);
         console.log("【The memo was successfully created.】");
