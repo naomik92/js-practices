@@ -7,13 +7,6 @@ export class MemoApp {
     this.display = new Display();
   }
 
-  static async create() {
-    const memoApp = new MemoApp();
-    memoApp.db = new Database();
-    await memoApp.db.createTable();
-    return memoApp;
-  }
-
   readMemoDetail() {
     const rl = readline.createInterface({
       input: process.stdin,
@@ -34,6 +27,8 @@ export class MemoApp {
   }
 
   async run(args) {
+    this.db = new Database();
+    await this.db.createTable();
     if (args.includes("-l")) {
       try {
         const memoList = await this.db.readAllMemos();
@@ -73,9 +68,6 @@ export class MemoApp {
     } else {
       console.log("【Invalid option entered.】");
     }
-  }
-
-  close() {
-    this.db.close();
+    await this.db.close();
   }
 }
