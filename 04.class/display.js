@@ -8,7 +8,7 @@ export class Display {
       choices: memoList,
     });
 
-    prompt
+    return prompt
       .run()
       .then((answer) => {
         const indexOfAnswer = prompt.choices.findIndex((memo) => {

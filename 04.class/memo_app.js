@@ -9,8 +9,8 @@ export class MemoApp {
 
   static async create() {
     const memoApp = new MemoApp();
-    memoApp.db = new Database("db/memos.db");
-    memoApp.db.createTable();
+    memoApp.db = new Database();
+    await memoApp.db.createTable();
     return memoApp;
   }
 
@@ -34,28 +34,44 @@ export class MemoApp {
   }
 
   async run(args) {
-    try {
-      if (args.includes("-l")) {
+    if (args.includes("-l")) {
+      try {
         const memoList = await this.db.readAllMemos();
         console.log(memoList.map((memo) => memo.title).join("\n"));
-      } else if (args.includes("-r")) {
+      } catch (err) {
+        console.log("【The memolists was failed to read.】");
+        console.error(err.message);
+      }
+    } else if (args.includes("-r")) {
+      try {
         const memoList = await this.db.readAllMemos();
-        this.display.selectAndDisplayDetail(memoList);
-      } else if (args.includes("-d")) {
+        await this.display.selectAndDisplayDetail(memoList);
+      } catch (err) {
+        console.log("【The memos was failed to read.】");
+        console.error(err.message);
+      }
+    } else if (args.includes("-d")) {
+      try {
         const memoList = await this.db.readAllMemos();
         const memoId = await this.display.selectMemoIdToDelete(memoList);
         await this.db.deleteMemo(memoId);
         console.log("【The memo was successfully deleted.】");
-      } else if (args.length === 0) {
-        const memoDetail = await this.readMemoDetail();
-        const memoTitle = memoDetail.split("\n")[0];
+      } catch (err) {
+        console.log("【The memo was failed to delete.】");
+        console.error(err.message);
+      }
+    } else if (args.length === 0) {
+      const memoDetail = await this.readMemoDetail();
+      const memoTitle = memoDetail.split("\n")[0];
+      try {
         await this.db.createMemo(memoTitle, memoDetail);
         console.log("【The memo was successfully created.】");
-      } else {
-        console.log("【Invalid option entered.】");
+      } catch (err) {
+        console.log("【The memo was failed to save.】");
+        console.error(err.message);
       }
-    } catch (err) {
-      console.error(err.message);
+    } else {
+      console.log("【Invalid option entered.】");
     }
   }
 
