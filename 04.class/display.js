@@ -8,15 +8,12 @@ export class Display {
       choices: memoList,
     });
 
-    return prompt
-      .run()
-      .then((answer) => {
-        const indexOfAnswer = prompt.choices.findIndex((memo) => {
-          return memo.title === answer;
-        });
-        console.log(prompt.choices[indexOfAnswer].detail);
-      })
-      .catch(console.error);
+    return prompt.run().then((answer) => {
+      const indexOfAnswer = prompt.choices.findIndex((memo) => {
+        return memo.title === answer;
+      });
+      console.log(prompt.choices[indexOfAnswer].detail);
+    });
   }
 
   async selectMemoIdToDelete(memoList) {
@@ -25,14 +22,11 @@ export class Display {
       choices: memoList,
     });
 
-    return prompt
-      .run()
-      .then((answer) => {
-        const indexOfAnswer = prompt.choices.findIndex((memo) => {
-          return memo.title === answer;
-        });
-        return prompt.choices[indexOfAnswer].id;
-      })
-      .catch(console.error);
+    return prompt.run().then((answer) => {
+      const indexOfAnswer = prompt.choices.findIndex((memo) => {
+        return memo.title === answer;
+      });
+      return prompt.choices[indexOfAnswer].id;
+    });
   }
 }
