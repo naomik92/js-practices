@@ -30,41 +30,21 @@ export class MemoApp {
     this.db = new Database();
     await this.db.createTable();
     if (args.includes("-l")) {
-      try {
-        const memoList = await this.db.readAllMemos();
-        console.log(memoList.map((memo) => memo.title).join("\n"));
-      } catch (err) {
-        console.log("【The memolists was failed to read.】");
-        console.error(err.message);
-      }
+      const memoList = await this.db.readAllMemos();
+      console.log(memoList.map((memo) => memo.title).join("\n"));
     } else if (args.includes("-r")) {
-      try {
-        const memoList = await this.db.readAllMemos();
-        await this.display.selectAndDisplayDetail(memoList);
-      } catch (err) {
-        console.log("【The memos was failed to read.】");
-        console.error(err.message);
-      }
+      const memoList = await this.db.readAllMemos();
+      await this.display.selectAndDisplayDetail(memoList);
     } else if (args.includes("-d")) {
-      try {
-        const memoList = await this.db.readAllMemos();
-        const memoId = await this.display.selectMemoIdToDelete(memoList);
-        await this.db.deleteMemo(memoId);
-        console.log("【The memo was successfully deleted.】");
-      } catch (err) {
-        console.log("【The memo was failed to delete.】");
-        console.error(err.message);
-      }
+      const memoList = await this.db.readAllMemos();
+      const memoId = await this.display.selectMemoIdToDelete(memoList);
+      await this.db.deleteMemo(memoId);
+      console.log("【The memo was successfully deleted.】");
     } else if (args.length === 0) {
       const memoDetail = await this.readMemoDetail();
       const memoTitle = memoDetail.split("\n")[0];
-      try {
-        await this.db.createMemo(memoTitle, memoDetail);
-        console.log("【The memo was successfully created.】");
-      } catch (err) {
-        console.log("【The memo was failed to save.】");
-        console.error(err.message);
-      }
+      await this.db.createMemo(memoTitle, memoDetail);
+      console.log("【The memo was successfully created.】");
     } else {
       console.log("【Invalid option entered.】");
     }
